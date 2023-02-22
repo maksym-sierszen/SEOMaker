@@ -1,5 +1,39 @@
 # GUI
 from tkinter import *
+def openExplorer():
+  # Open explore window
+  filePath = fd.askopenfilename()
+  fileBox.delete(0, END)
+  fileBox.insert(0, filePath)
+
+
+  # Put the file path into input
+  imageNameBox.delete(0, END)
+  fileName = os.path.basename(filePath)
+  fileName = lowercaseifyName(fileName)
+  imageNameBox.insert(0, fileName)
+
+# Convert filename into a product-name-image- format
+def lowercaseifyName(name):
+  name = name.lower()
+  symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," "]
+  for symbol in name:
+    if symbol in symbolsToChange:
+      name = name.replace(symbol, "-")
+
+    # Remove file extension from name
+    if "docx" in name:
+      name = name.replace("docx", "")
+  return name
+
+# Copy the newly generated image file name to the clipboard
+def copyImageName():
+  imageName = imageNameBox.get()
+  root.clipboard_clear()  
+  root.clipboard_append(imageName)  
+
+
+### GUI 
 from tkinter import filedialog as fd
 import os
 
@@ -17,40 +51,6 @@ imageNameBox = Entry(root, width=40)
 imageNameBox.insert(0, " ")
 
 
-def openExplorer():
-  # Open explore window
-  filePath = fd.askopenfilename()
-  fileBox.delete(0, END)
-  fileBox.insert(0, filePath)
-
-  #only do when function success
-  # Put the file path into input
-  imageNameBox.delete(0, END)
-  fileName = os.path.basename(filePath)
-  fileName = lowercaseifyName(fileName)
-  imageNameBox.insert(0, fileName)
-
-def lowercaseifyName(name):
-  name = name.lower()
-  symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," "]
-  for symbol in name:
-    if symbol in symbolsToChange:
-      name = name.replace(symbol, "-")
-
-    if "docx" in name:
-      name = name.replace("docx", "")
-  return name
-
-test = "De'longi.3"
-print(lowercaseifyName(test))
-# Copy the newly generated image file name to the clipboard
-def copyImageName():
-  imageName = imageNameBox.get()
-  root.clipboard_clear()  
-  root.clipboard_append(imageName)  
-
-
-
 browseButton = Button(root, text="Przeglądaj pliki", command=openExplorer)
 copyNameButton = Button(root, text="Kopiuj", command=copyImageName)
 
@@ -61,7 +61,6 @@ browseButton.grid(row=0, column=2, padx=20, pady=20)
 imageName.grid(row=1, column=0,padx=20, pady=20)
 imageNameBox.grid(row=1, column=1, padx=10, pady=20)
 copyNameButton.grid(row=1, column=2, padx=20, pady=20)
-
 
 root.mainloop()
 
