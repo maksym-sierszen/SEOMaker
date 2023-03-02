@@ -1,17 +1,51 @@
-# GUI
 from tkinter import *
+from tkinter import filedialog as fd
+import docx2txt
+import os
+
+def textRemover(toRemove, fromRemove):
+  if toRemove in fromRemove:
+      fromRemove = fromRemove.replace(toRemove, "")
+  return fromRemove
+
+
+
+# Open the file
+def openWord(wordFile):
+  document = docx2txt.process(wordFile)
+
+  paragraphs = []
+  paragraphs = document.split('\n\n')
+  # Warunek że jeśli paragraph[0] == filename to skip
+
+  wordFile = textRemover(".docx", wordFile)
+  if (paragraphs[0] == wordFile):
+    paragraphs.pop(0)
+
+
+  print(paragraphs[0])
+  print("\n\n")
+  print(paragraphs[1])
+  print("\n\n")
+  print(paragraphs[2])
+
+
+
+# Choose file and create filename for graphics
 def openExplorer():
   # Open explore window
   filePath = fd.askopenfilename()
   fileBox.delete(0, END)
   fileBox.insert(0, filePath)
 
-
   # Put the file path into input
   imageNameBox.delete(0, END)
   fileName = os.path.basename(filePath)
-  fileName = lowercaseifyName(fileName)
-  imageNameBox.insert(0, fileName)
+  fileNameReady = lowercaseifyName(fileName)
+  imageNameBox.insert(0, fileNameReady)
+
+  openWord(fileName)
+
 
 # Convert filename into a product-name-image- format
 def lowercaseifyName(name):
@@ -22,8 +56,9 @@ def lowercaseifyName(name):
       name = name.replace(symbol, "-")
 
     # Remove file extension from name
-    if "docx" in name:
-      name = name.replace("docx", "")
+    name = textRemover("docx", name)
+    # if "docx" in name:
+    #   name = name.replace("docx", "")
   return name
 
 # Copy the newly generated image file name to the clipboard
@@ -33,10 +68,29 @@ def copyImageName():
   root.clipboard_append(imageName)  
 
 
-### GUI 
-from tkinter import filedialog as fd
-import os
 
+## WORD
+
+
+
+
+# Break template down into parts
+
+
+# Extract parts from docx file
+
+
+# Fill template parts with docx content
+
+
+# Generate SEO file
+
+
+
+
+
+
+### GUI 
 root = Tk()
 root.geometry("600x250")
 
@@ -63,15 +117,3 @@ imageNameBox.grid(row=1, column=1, padx=10, pady=20)
 copyNameButton.grid(row=1, column=2, padx=20, pady=20)
 
 root.mainloop()
-
-
-# Break template down into parts
-
-
-# Extract parts from docx file
-
-
-# Fill template parts with docx content
-
-
-# Generate SEO file
