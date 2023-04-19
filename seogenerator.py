@@ -4,6 +4,12 @@ import docx2txt
 import os
 
 
+# TO DO:
+# polskie znaki replacer
+# dodac dziwne znaczki do nazwy
+# dodac mozliwosc zmiany nazwy po wklejeniu jej po prostu też
+
+
 
 def textReplacer(toReplace, fromReplace, withReplace):
   if toReplace in fromReplace:
@@ -75,8 +81,10 @@ def makeText():
   #################
 
   # Fill the template
-
+  
   readyToUse = textReplacer(templateParts[1], template, fileName)
+  readyToUse_help = textReplacer("nazwa produktu", templateParts[0], fileName)
+  readyToUse = textReplacer(templateParts[0], readyToUse , readyToUse_help)
   readyToUse = textReplacer(templateParts[3], readyToUse, paragraphs[0])
 
   readyToUse = textReplacer(templateParts[6], readyToUse, paragraphs[1])
