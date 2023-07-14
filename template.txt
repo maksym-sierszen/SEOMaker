@@ -1,0 +1,78 @@
+<div class="col-1-6 top">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="PRODUCTNAME" />
+</div>
+<div class="col-5-6 m-center">
+<h3 class="size-5">
+
+PRODUCTNAME
+
+</h3>
+<p> 
+
+TEXT1
+
+</p>
+<div class="col-3-3">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME1.jpg" class="left" alt="ALTTEXT" />
+</div>
+</div>
+
+<div class="col-1-6 top">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="HEADER2" />
+</div>
+<div class="col-5-6 m-center">
+<h3 class="size-5">
+
+
+HEADER2
+
+</h3>
+<p>
+
+TEXT2
+
+</p>
+<div class="col-3-3">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME2.jpg" class="left" alt="ALTTEXT" />
+</div>
+</div>
+
+
+<div class="col-1-6 top">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="HEADER3" />
+</div>
+<div class="col-5-6 m-center">
+<h3 class="size-5">
+
+HEADER3
+
+</h3>
+<p>
+
+TEXT3
+
+</p>
+<div class="col-3-3">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME3.jpg" class="left" alt="ALTTEXT" />
+</div>
+</div>
+
+<div class="col-1-6 top">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="HEADER4" />
+</div>
+<div class="col-5-6 m-center">
+<h3 class="size-5">
+
+HEADER4
+
+</h3>
+<p>
+
+TEXT4
+
+</p>
+<div class="col-3-3">
+<img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME4.jpg" class="left" alt="ALTTEXT" />
+</div>
+</div>
+
