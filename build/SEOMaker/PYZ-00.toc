@@ -1,4 +1,4 @@
-('C:\\Users\\User\\Desktop\\oopseo\\build\\SEOMaker\\PYZ-00.pyz',
+('C:\\Users\\User\\Desktop\\SEOMaker\\build\\SEOMaker\\PYZ-00.pyz',
  [('_compat_pickle',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\_compat_pickle.py',

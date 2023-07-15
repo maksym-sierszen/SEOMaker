@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog as fd
+from pathlib import Path
 import docx2txt
 import os
 
@@ -86,8 +87,8 @@ class Text():
 class fileManager:
   def __init__(self, gui):
       self.gui = gui
-      self.desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-      self.filePath = os.path.join(self.desktop_path, 'wpiszERP.txt')
+      self.desktop_path = Path.home() / 'Desktop'
+      self.filePath = self.desktop_path / 'wpiszERP.txt'
       
   def saveContent(self, readyToUse):
     try:
