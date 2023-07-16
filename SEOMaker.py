@@ -87,9 +87,9 @@ class Text():
 class fileManager:
   def __init__(self, gui):
       self.gui = gui
-      self.desktop_path = Path.home() / 'Desktop'
+      self.desktop_path = Path.home() / 'OneDrive - Grupa Komputronik' / 'Pulpit'
       self.filePath = self.desktop_path / 'wpiszERP.txt'
-      
+
   def saveContent(self, readyToUse):
     try:
         with open(self.filePath, "w", encoding="utf-8") as file:
@@ -116,7 +116,9 @@ class fileManager:
           text = Text()
           text.createFile() 
           readyToUse = text.processContent(word.productName, word.paragraphs)  
-          self.saveContent(readyToUse)  
+          dirPath = os.path.dirname(fileName) 
+          self.filePath = os.path.join(dirPath, 'wpiszERP.txt')
+          self.saveContent(readyToUse) 
 
 class GUI:
     def __init__(self):
