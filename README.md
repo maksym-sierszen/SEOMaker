@@ -3,10 +3,10 @@
 SEOMaker to narzędzie stworzone w celu generowania treści SEO z plików docx.
 
 ## Funkcje
-Wybieranie plików docx za pomocą GUI.
-Automatyczne generowanie treści SEO na podstawie szablonu i zawartości pliku docx.
-Automatyczne generowanie nazw obrazów zgodnych z kryteriami.
-Zapisywanie wygenerowanych treści SEO do pliku txt.
+Wybieranie plików docx za pomocą GUI./n
+Automatyczne generowanie treści SEO na podstawie szablonu i zawartości pliku docx./n
+Automatyczne generowanie nazw obrazów zgodnych z kryteriami./n
+Zapisywanie wygenerowanych treści SEO do pliku txt./n
 
 ## Instrukcja
 Uruchom program i kliknij przycisk "Przeglądaj pliki" aby wybrać plik docx, z którego chcesz wygenerować treść SEO.
