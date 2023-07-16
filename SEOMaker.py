@@ -87,8 +87,8 @@ class Text():
 class fileManager:
   def __init__(self, gui):
       self.gui = gui
-      self.desktop_path = Path.home() / 'OneDrive - Grupa Komputronik' / 'Pulpit'
-      self.filePath = self.desktop_path / 'wpiszERP.txt'
+      self.desktopPath = Path.home() / 'OneDrive - Grupa Komputronik' / 'Pulpit'
+      self.filePath = self.desktopPath / 'wpiszERP.txt'
 
   def saveContent(self, readyToUse):
     try:
@@ -99,7 +99,7 @@ class fileManager:
 
   def openExplorer(self):
       try:
-          filePath = fd.askopenfilename(initialdir=self.desktop_path, title="Wybierz plik", filetypes=(("docx files", "*.docx"), ("all files", "*.*")))
+          filePath = fd.askopenfilename(initialdir=self.desktopPath, title="Wybierz plik", filetypes=(("docx files", "*.docx"), ("all files", "*.*")))
           if filePath:
               self.gui.fileBox.delete(0, END)
               self.gui.fileBox.insert(0, filePath)
@@ -117,7 +117,7 @@ class fileManager:
           text.createFile() 
           readyToUse = text.processContent(word.productName, word.paragraphs)  
           dirPath = os.path.dirname(fileName) 
-          self.filePath = os.path.join(dirPath, 'wpiszERP.txt')
+          self.filePath = os.path.join(dirPath, f'wpiszERP - {word.productName}.txt')
           self.saveContent(readyToUse) 
 
 class GUI:
