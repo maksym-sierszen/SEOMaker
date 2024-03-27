@@ -39,7 +39,7 @@ class Text():
 
       productName = productName.lower()
 
-      symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," ", "]", "[", "~", "<", ">","+", "="]
+      symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," ", "]", "[", "~", "<", ">","+", "=", "|"]
       for symbol in symbolsToChange:
         if symbol in productName:
           productName = productName.replace(symbol, "-")
@@ -123,7 +123,7 @@ class fileManager:
 class GUI:
     def __init__(self):
         self.root = Tk()
-        self.root.title("SEOMaker v1.0")
+        self.root.title("SEOMaker v2.0")
         self.root.iconbitmap("icon.ico")
         self.root.geometry("700x250")
         self.root.configure(bg='white')  
@@ -163,3 +163,19 @@ class GUI:
 
 gui = GUI()
 gui.run()
+
+
+
+## PARAFRAZY
+
+# STRZAŁKA w lewo <--
+
+# zaczytuje tekst z lewego okna
+# rozbija wg znaków ukrytych
+# wstawia w zaczytany wcześniej szablon z fotkami i piktogramami dla danego produktu
+
+# STRZAŁKA w prawo -->
+
+# zaczytuje opis htmlowy
+# wyodrębnia poszczególne sekcje które będziemy chcieli kopiować <p>
+# wstawia te sekcje do okienka po prawej
