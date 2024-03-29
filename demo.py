@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from bs4 import BeautifulSoup
 
 
 class TextProcessor:
@@ -78,8 +79,48 @@ class TextProcessor:
         
         gui.HTMLWindowTab1.delete("1.0", tk.END)  # Najpierw usuń obecny tekst
         gui.HTMLWindowTab1.insert("1.0", self.readyToUse)
+        
+        gui.HTMLWindowTab2.delete("1.0", tk.END)  # Najpierw usuń obecny tekst
+        gui.HTMLWindowTab2.insert("1.0", self.readyToUse)
 
 
+class Paraphraser:
+    def __init__(self, gui):
+        self.gui = gui
+        self.HTMLContent = ''''''
+        ##### DODAC BUTTON ON AND OFF W TEJ SEKCJI KIEDY JEST JEDEN WCISNIETY
+    def extractContent(self):
+    
+        HTMLContent = self.gui.HTMLWindowTab2.get("1.0", "end-1c")
+
+        soup = BeautifulSoup(HTMLContent, 'lxml')
+
+        self.gui.textWindowTab2.delete("1.0", "end")
+
+        for p in soup.find_all('p'):
+            text = p.get_text(strip=True) + "\n\n"  # Dodajemy dodatkowy odstęp między paragrafami
+            self.gui.textWindowTab2.insert("end", text)
+    
+    def addHTML(self):
+        # Pobierz treść paragrafów do zastąpienia z TextWindowTab2
+        paragraphsContent = self.gui.textWindowTab2.get("1.0", "end-1c").strip().split('\n\n')
+        # Pobierz aktualną treść HTML z HTMLWindowTab2
+        HTMLContent = self.gui.HTMLWindowTab2.get("1.0", "end-1c")
+
+        # Utwórz obiekt BeautifulSoup do modyfikacji HTML
+        soup = BeautifulSoup(HTMLContent, 'lxml')
+
+        # Znajdź wszystkie paragrafy <p> w HTML
+        paragraphs = soup.find_all('p')
+        
+        # Zastąp treść każdego paragrafu <p> treścią z TextWindowTab2
+        for p, new_text in zip(paragraphs, paragraphsContent):
+            p.string = new_text
+
+        # Wyczyść HTMLWindowTab1 i wstaw zmodyfikowaną treść HTML
+        self.gui.HTMLWindowTab2.delete("1.0", "end")
+        self.gui.HTMLWindowTab2.insert("1.0", str(soup))
+    
     
 class GUI:
     def __init__(self):
@@ -89,6 +130,7 @@ class GUI:
         self.window.configure(bg='white')
         self.window.resizable(False, False)
         self.textProcessor = TextProcessor(self)
+        self.paraphraser = Paraphraser(self)
 
         notebook = ttk.Notebook(self.window)
         
@@ -135,15 +177,15 @@ class GUI:
         self.textLabelTab2 = tk.Label(tab2, text="Tekst")
 
        
-        self.htmlWindowTab2 = tk.Text(tab2, height=20, width=30)
+        self.HTMLWindowTab2 = tk.Text(tab2, height=20, width=30)
         self.textWindowTab2 = tk.Text(tab2, height=20, width=30)
 
        
-        self.transferToTextButtonTab2 = tk.Button(tab2, text="--->") 
-        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---") 
+        self.transferToTextButtonTab2 = tk.Button(tab2, text="--->", command=self.paraphraser.extractContent) 
+        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=self.paraphraser.addHTML) 
 
-        self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML") 
-        self.copyTextButtonTab2 = tk.Button(tab2, text="Kopiuj Tekst")  
+        self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab2)) 
+        self.copyTextButtonTab2 = tk.Button(tab2, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab2))  
 
         ## SPACING
         # FIRST ROW (0 - Labels)
@@ -151,7 +193,7 @@ class GUI:
         self.textLabelTab2.grid(row=0, column=2, padx=(5, 10), pady=(10, 0))
 
         # SECOND ROW (1 - Windows and Transfer Button)
-        self.htmlWindowTab2.grid(row=1, column=0, rowspan=2, padx=(10, 5), pady=(5, 10))
+        self.HTMLWindowTab2.grid(row=1, column=0, rowspan=2, padx=(10, 5), pady=(5, 10))
         self.textWindowTab2.grid(row=1, column=2, rowspan=2, padx=(5, 10), pady=(5, 10))
         self.transferToTextButtonTab2.grid(row=1, column=1, padx=(65, 65), pady=(5, 10))
         
@@ -191,3 +233,4 @@ class GUI:
 
 gui = GUI()
 gui.run()
+#Sparafrazuj tekst tak aby był unikalny, zachowując strukturę akapitów. Zrób to jak specjalista SEO. Zachowaj poprawność językową i nie używaj strony biernej. Nie używaj stopniowania przymiotników. Tekst ma być w języku polskim i ma różnić się od pierwotnej wersji. Rozbuduj tekst o większą ilość znaków.:
