@@ -9,9 +9,9 @@ class TextProcessor:
         self.productDescription = ""
         self.paragraphs = []
         self.productName = ""
-        self.template = ""
         self.readyToUse = ""
         self.imageFileName = ""
+        self.templateLength = 4
     
     def getData(self):
         self.productDescription = self.gui.textWindowTab1.get("1.0", "end-1c")
@@ -19,8 +19,7 @@ class TextProcessor:
         # Usuwanie pustych elementów
         self.paragraphs = list(filter(lambda par: par != "", self.paragraphs)) 
         self.productName = self.paragraphs[0]
-        self.paragraphs.pop(0)
-        print(self.paragraphs[0])
+        self.templateLength = len(self.paragraphs) // 2 
 
     def generateImageFileName(self, productName):
         imageFileNameBase = self.productName
@@ -38,36 +37,53 @@ class TextProcessor:
         while '--' in imageFileNameBase:
             imageFileNameBase = imageFileNameBase.replace('--', '-')
 
-        for i in range(1, 5):
+        for i in range(1, self.templateLength+1):
             self.imageFileName = f"{imageFileNameBase}-{i}"
-            self.readyToUse = self.readyToUse.replace(f"IMAGENAME{i}", self.imageFileName)
+            self.readyToUse = self.readyToUse.replace(f"IMAGENAME", self.imageFileName, 1)
         
         gui.imageNameEntryTab1.delete(0, tk.END)
-        gui.imageNameEntryTab1.insert(0, imageFileNameBase) 
+        gui.imageNameEntryTab1.insert(0, imageFileNameBase+"-") 
 
      
      
     def fillTemplate(self, productName, paragraphs):
-        with open("template.txt", "r", encoding="utf-8") as file:
-            self.template = file.read()
+        
+        # Przechowuje końcowy szablon jako listę fragmentów, które potem zostaną połączone
+        fragments = []
+        
+        for n in range(0, len(paragraphs), 2):
+            # Użycie n dla nagłówków i n+1 dla paragrafów
+            header = paragraphs[n] if n < len(paragraphs) else ""
+            text = paragraphs[n+1] if n+1 < len(paragraphs) else ""
+            
+            templateElement = f"""<div class="col-1-6 top">
+                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="{header}" />
+                    </div>
+                    <div class="col-5-6 m-center">
+                    <h3 class="size-5">
+                    {header}
+                    </h3>
+                    <p> 
+                    {text}
+                    </p>
+                    <div class="col-3-3">
+                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt="{productName}" />
+                    </div>
+                    </div>"""
+                    
+            # Użycie BeautifulSoup do analizy i modyfikacji szablonu, jeśli to konieczne
+            soup = BeautifulSoup(templateElement, 'html.parser')
+            
+            # Uaktualnienie alternatywnego tekstu dla obrazków, jeśli masz specyficzne wymagania co do tego
+            for img in soup.find_all('img', class_='left'):
+                img['alt'] = productName
+            
+            # Dodanie zmodyfikowanego fragmentu do listy
+            fragments.append(str(soup))
 
-        replacements = {
-            "ALTTEXT": self.productName,
-            "PRODUCTNAME": self.productName,
-            "TEXT1": self.paragraphs[0],
-            "HEADER2": self.paragraphs[1],
-            "TEXT2": self.paragraphs[2],
-            "HEADER3": self.paragraphs[3],
-            "TEXT3": self.paragraphs[4],
-            "HEADER4": self.paragraphs[5],
-            "TEXT4": self.paragraphs[6]
-        }
 
-        self.readyToUse = self.template
-
-
-        for key, value in replacements.items():
-            self.readyToUse = self.readyToUse.replace(key, value)
+     # Połączenie fragmentów w jeden string bez tagów <html> i <body>
+        self.readyToUse = ''.join(fragments)
 
      
     def generateSEO(self):
@@ -75,13 +91,15 @@ class TextProcessor:
         self.fillTemplate(self.productName, self.paragraphs)
         self.generateImageFileName(self.productName)
         
-        print(self.readyToUse)
+       # print(self.readyToUse)
         
         gui.HTMLWindowTab1.delete("1.0", tk.END)  # Najpierw usuń obecny tekst
         gui.HTMLWindowTab1.insert("1.0", self.readyToUse)
         
         gui.HTMLWindowTab2.delete("1.0", tk.END)  # Najpierw usuń obecny tekst
         gui.HTMLWindowTab2.insert("1.0", self.readyToUse)
+        
+        gui.textWindowTab2.delete("1.0", tk.END)
 
 
 class Paraphraser:
