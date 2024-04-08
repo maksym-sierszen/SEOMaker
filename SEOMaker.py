@@ -147,10 +147,10 @@ class GUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("SEOMaker v2.0")
-        self.window.iconbitmap("icon.ico")
-        self.window.geometry("750x600")
-        self.window.configure(bg='white')
-        self.window.resizable(False, False)
+        self.window.iconbitmap("assets/icon.ico")
+        self.window.geometry("800x650")
+        self.window.configure(background='white')
+        self.window.resizable(False, True)
         self.textProcessor = TextProcessor(self)
         self.paraphraser = Paraphraser(self)
         self.defaultPrompt = "Sparafrazuj tekst tak aby był unikalny, zachowując strukturę akapitów. Zrób to jak specjalista SEO. Zachowaj poprawność językową i nie używaj strony biernej. Nie używaj stopniowania przymiotników. Tekst ma być w języku polskim i ma różnić się od pierwotnej wersji. Rozbuduj tekst o większą ilość znaków."
@@ -165,31 +165,32 @@ class GUI:
         
         self.textWindowTab1 = tk.Text(tab1, height=20, width=30)
         self.HTMLWindowTab1 = tk.Text(tab1, height=20, width=30)
-        self.transferToHTMLButtonTab1 = tk.Button(tab1, text="--->", command=self.textProcessor.generateSEO)
+        self.transferToHTMLButtonTab1 = tk.Button(tab1, text="--->", command=self.textProcessor.generateSEO, bg="#008CBA", width="15")
         
-        self.copyHTMLButtonTab1 = tk.Button(tab1, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab1))
+        self.copyHTMLButtonTab1 = tk.Button(tab1, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab1), bg="#008CBA", width="30")
         
         self.imageNameTab1 = tk.Label(tab1, text="Nazwy grafik")
         self.imageNameEntryTab1 = tk.Entry(tab1, width=20)
-        self.copyNameButtonTab1 = tk.Button(tab1, text="Kopiuj nazwę", command=lambda: self.copyToClipboard(self.imageNameEntryTab1))
+        self.copyNameButtonTab1 = tk.Button(tab1, text="Kopiuj nazwę", command=lambda: self.copyToClipboard(self.imageNameEntryTab1), bg="#008CBA")
         
         ## SPACING
+
+        X=50
         # FIRST ROW (0 - Labels)
-        self.textLabelTab1.grid(row=0, column=0, padx=(10, 5), pady=(10, 0))
-        self.htmlLabelTab1.grid(row=0, column=2, padx=(5, 10), pady=(10, 0))
-        
+        self.textLabelTab1.grid(row=0, column=0, padx=(X, X/2), pady=(10, 0)) 
+        self.htmlLabelTab1.grid(row=0, column=2, padx=(X/2, X), pady=(10, 0)) 
         # SECOND ROW (1 - Windows and button)
-        self.textWindowTab1.grid(row=1, column=0, padx=(10, 5), pady=(5, 10))
-        self.transferToHTMLButtonTab1.grid(row=1, column=1, padx=(5, 5), pady=10)
-        self.HTMLWindowTab1.grid(row=1, column=2, padx=(5, 10), pady=(5, 10))
-        
+        self.textWindowTab1.grid(row=1, column=0, padx=(X, X/2), pady=(5, 10))
+        self.transferToHTMLButtonTab1.grid(row=1, column=1, padx=(X/2, X/2), pady=10)
+        self.HTMLWindowTab1.grid(row=1, column=2, padx=(X/2, X), pady=(5, 10))
+
         # THIRD ROW (2 - Copy HTML Button)
-        self.copyHTMLButtonTab1.grid(row=2, column=2, padx=(5, 10), pady=10)
-        
+        self.copyHTMLButtonTab1.grid(row=2, column=2, padx=(X/2, X), pady=10)
+                
         # FOURTH ROW (3 - Image Name Section)
-        self.imageNameTab1.grid(row=3, column=0, pady=10)
-        self.imageNameEntryTab1.grid(row=3, column=1, pady=10)
-        self.copyNameButtonTab1.grid(row=3, column=2, pady=10)
+        self.imageNameTab1.grid(row=3, column=0, pady=30)
+        self.imageNameEntryTab1.grid(row=3, column=1, pady=30)
+        self.copyNameButtonTab1.grid(row=3, column=2, pady=30)
 
     
         # Tab for paraphrases (tab2)
@@ -202,11 +203,11 @@ class GUI:
         self.HTMLWindowTab2 = tk.Text(tab2, height=20, width=30)
         self.textWindowTab2 = tk.Text(tab2, height=20, width=30)
 
-        self.transferToTextButtonTab2 = tk.Button(tab2, text="--->", command=self.paraphraser.extractContent) 
-        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=self.paraphraser.addHTML) 
+        self.transferToTextButtonTab2 = tk.Button(tab2, text="--->", command=self.paraphraser.extractContent, bg="#008CBA", width="15") 
+        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=self.paraphraser.addHTML, bg="#008CBA", width="15") 
 
-        self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab2)) 
-        self.copyTextButtonTab2 = tk.Button(tab2, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab2, addPrompt=True))  
+        self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab2), bg="#008CBA", width="30") 
+        self.copyTextButtonTab2 = tk.Button(tab2, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab2, addPrompt=True), bg="#008CBA", width="30")  
 
         self.promptLabelTab2 = tk.Label(tab2, text="Prompt")
         self.promptTextWindowTab2 = tk.Text(tab2, height=10, width= 30)
@@ -241,9 +242,14 @@ class GUI:
         
         
         
+        style=ttk.Style()
+        style.theme_use('default')
+        style.configure('TNotebook.Tab', background='lightblue')
+        style.map('TNotebook.Tab', background=[('selected', '#008CBA')])
         # Adding tabs to notebook
         notebook.add(tab1, text="Nowy opis")
         notebook.add(tab2, text="Parafrazy")
+        
         notebook.pack(expand=True, fill='both')
          
     
