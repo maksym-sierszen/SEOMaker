@@ -5,7 +5,7 @@ a = Analysis(
     ['SEOMaker.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets/icon.icns', '.')],
+    datas=[('dist/icon.ico', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -34,11 +34,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['assets/icon.icns'],
-)
-app = BUNDLE(
-    exe,
-    name='SEOMaker.app',
-    icon='assets/icon.icns',
-    bundle_identifier=None,
+    icon=['dist\\icon.ico'],
 )

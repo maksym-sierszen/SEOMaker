@@ -1,3 +1,0 @@
-([('SEOMaker',
-   '/Users/maksymsierszen/Desktop/Maker/dist/SEOMaker',
-   'EXECUTABLE')],)

@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from bs4 import BeautifulSoup
 
-
 class TextProcessor:
     def __init__(self, gui):
         self.gui = gui
@@ -114,7 +113,7 @@ class Paraphraser:
         self.gui.textWindowTab2.delete("1.0", "end")
 
         for p in soup.find_all('p'):
-            text = p.get_text(strip=True) + "\n\n"  # Dodajemy dodatkowy odstęp między paragrafami
+            text = p.get_text(strip=True) + "\n\n" 
             self.gui.textWindowTab2.insert("end", text)
     
     def addHTML(self):
@@ -134,11 +133,11 @@ class Paraphraser:
         if soup.body is not None:
             soup.body.unwrap()
         
-        # Zastąp treść każdego paragrafu <p> treścią z TextWindowTab2
+        # Swap the content of each paragraph with the content from TextWindowTab2
         for p, new_text in zip(paragraphs, paragraphsContent):
             p.string = new_text
 
-        # Wyczyść HTMLWindowTab1 i wstaw zmodyfikowaną treść HTML
+        # Clear HTMLWindowTab1 and instert modified HTML
         self.gui.HTMLWindowTab2.delete("1.0", "end")
         self.gui.HTMLWindowTab2.insert("1.0", str(soup))
     
@@ -147,7 +146,7 @@ class GUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("SEOMaker v2.0")
-        self.window.iconbitmap("assets/icon.ico")
+        self.window.iconbitmap("icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, True)
@@ -175,17 +174,17 @@ class GUI:
         
         ## SPACING
 
-        X=50
+        paddingx1=50
         # FIRST ROW (0 - Labels)
-        self.textLabelTab1.grid(row=0, column=0, padx=(X, X/2), pady=(10, 0)) 
-        self.htmlLabelTab1.grid(row=0, column=2, padx=(X/2, X), pady=(10, 0)) 
+        self.textLabelTab1.grid(row=0, column=0, padx=(paddingx1, paddingx1/2), pady=(10, 0)) 
+        self.htmlLabelTab1.grid(row=0, column=2, padx=(paddingx1/2, paddingx1), pady=(10, 0)) 
         # SECOND ROW (1 - Windows and button)
-        self.textWindowTab1.grid(row=1, column=0, padx=(X, X/2), pady=(5, 10))
-        self.transferToHTMLButtonTab1.grid(row=1, column=1, padx=(X/2, X/2), pady=10)
-        self.HTMLWindowTab1.grid(row=1, column=2, padx=(X/2, X), pady=(5, 10))
+        self.textWindowTab1.grid(row=1, column=0, padx=(paddingx1, paddingx1/2), pady=(5, 10))
+        self.transferToHTMLButtonTab1.grid(row=1, column=1, padx=(paddingx1/2, paddingx1/2), pady=10)
+        self.HTMLWindowTab1.grid(row=1, column=2, padx=(paddingx1/2, paddingx1), pady=(5, 10))
 
         # THIRD ROW (2 - Copy HTML Button)
-        self.copyHTMLButtonTab1.grid(row=2, column=2, padx=(X/2, X), pady=10)
+        self.copyHTMLButtonTab1.grid(row=2, column=2, padx=(paddingx1/2, paddingx1), pady=10)
                 
         # FOURTH ROW (3 - Image Name Section)
         self.imageNameTab1.grid(row=3, column=0, pady=30)
@@ -217,27 +216,28 @@ class GUI:
 
         
         ## SPACING
+        paddingx2=15
         # FIRST ROW (0 - Labels)
-        self.htmlLabelTab2.grid(row=0, column=0, padx=(10, 5), pady=(10, 0))
-        self.textLabelTab2.grid(row=0, column=2, padx=(5, 10), pady=(10, 0))
+        self.htmlLabelTab2.grid(row=0, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
+        self.textLabelTab2.grid(row=0, column=2, padx=(paddingx2/2, paddingx2), pady=(10, 0))
 
         # SECOND ROW (1 - Windows and Transfer Button)
-        self.HTMLWindowTab2.grid(row=1, column=0, rowspan=2, padx=(10, 5), pady=(5, 10))
-        self.textWindowTab2.grid(row=1, column=2, rowspan=2, padx=(5, 10), pady=(5, 10))
-        self.transferToTextButtonTab2.grid(row=1, column=1, padx=(65, 65), pady=(5, 10))
+        self.HTMLWindowTab2.grid(row=1, column=0, rowspan=2, padx=(paddingx2, paddingx2/2), pady=(5, 10))
+        self.textWindowTab2.grid(row=1, column=2, rowspan=2, padx=(paddingx2/2, paddingx2/2), pady=(5, 10))
+        self.transferToTextButtonTab2.grid(row=1, column=1, padx=(paddingx2/2,paddingx2), pady=(5, 10))
         
         # THIRD ROW (2 - Transfer Button)
-        self.transferToHTMLButtonTab2.grid(row=2, column=1, padx=(65, 65), pady=(5, 10))
+        self.transferToHTMLButtonTab2.grid(row=2, column=1, padx=(paddingx2/2, paddingx2/2), pady=(5, 10))
 
         # FOURTH ROW (3 - copyButtons)
-        self.copyHTMLButtonTab2.grid(row=3, column=0, padx=(10, 5), pady=(10, 5))
-        self.copyTextButtonTab2.grid(row=3, column=2, padx=(5, 10), pady=(10, 5))
+        self.copyHTMLButtonTab2.grid(row=3, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 5))
+        self.copyTextButtonTab2.grid(row=3, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 5))
 
         # FIFTH ROW (4 - Prompt Sectio)
-        self.promptLabelTab2.grid(row=4, column=0, padx=(10, 5), pady=(10, 0))
-        self.promptTextWindowTab2.grid(row=4, column=1, padx=(10, 5), pady=(10, 0))
+        self.promptLabelTab2.grid(row=4, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
+        self.promptTextWindowTab2.grid(row=4, column=1, padx=(paddingx2/2, paddingx2/2), pady=(10, 0))
         #self.copyPromptButtonTab2.grid(row=4, column=2, padx=(10, 5), pady=(10, 0))
-        self.promptCheckbuttonTab2.grid(row=4, column=2, padx=(10, 5), pady=(10, 0))
+        self.promptCheckbuttonTab2.grid(row=4, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 0))
         
         
         
@@ -279,7 +279,8 @@ class GUI:
         
     def run(self):
         self.window.mainloop() 
-       
+
+
 if __name__ == "__main__":
     gui = GUI()
     gui.run()
