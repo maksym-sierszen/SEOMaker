@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from bs4 import BeautifulSoup
+import re
 
 class TextProcessor:
     def __init__(self, gui):
@@ -34,11 +35,11 @@ class TextProcessor:
             if symbol in imageFileNameBase:
                 imageFileNameBase = imageFileNameBase.replace(symbol, "-")
 
-        while '--' in imageFileNameBase:
-            imageFileNameBase = imageFileNameBase.replace('--', '-')
+        
 
         for i in range(1, self.templateLength+1):
             self.imageFileName = f"{imageFileNameBase}-{i}"
+            self.imageFileName = re.sub(r'-{2,}', '-', self.imageFileName)
             self.readyToUse = self.readyToUse.replace(f"IMAGENAME", self.imageFileName, 1)
         
         gui.imageNameEntryTab1.delete(0, tk.END)
