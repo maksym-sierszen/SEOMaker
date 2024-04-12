@@ -30,10 +30,12 @@ class TextProcessor:
 
         imageFileNameBase = imageFileNameBase.lower()
 
-        symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," ", "]", "[", "~", "<", ">","+", "=", "|"]
+        symbolsToChange = [".", ",", "`", ":", ";", "/", "'"," ", "]", "[", "~", "<", ">","+", "=", "|", "(", ")"]
         for symbol in symbolsToChange:
             if symbol in imageFileNameBase:
                 imageFileNameBase = imageFileNameBase.replace(symbol, "-")
+               
+
 
         
 
@@ -41,7 +43,8 @@ class TextProcessor:
             self.imageFileName = f"{imageFileNameBase}-{i}"
             self.imageFileName = re.sub(r'-{2,}', '-', self.imageFileName)
             self.readyToUse = self.readyToUse.replace(f"IMAGENAME", self.imageFileName, 1)
-        
+
+        imageFileNameBase = re.sub(r'-{2,}', '-', imageFileNameBase)
         gui.imageNameEntryTab1.delete(0, tk.END)
         gui.imageNameEntryTab1.insert(0, imageFileNameBase+"-") 
 
@@ -53,11 +56,31 @@ class TextProcessor:
         fragments = []
         
         for n in range(0, len(paragraphs), 2):
+            
+    
             # Using n for headers and n+1 for paragraphs
             header = paragraphs[n] if n < len(paragraphs) else ""
             text = paragraphs[n+1] if n+1 < len(paragraphs) else ""
             
-            templateElement = f"""<div class="col-1-6 top">
+            if n<7:
+                templateElement = f"""<div class="col-1-6 top">
+                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="{header}" />
+                        </div>
+                        <div class="col-5-6 m-center">
+                        <h3 class="size-5">
+                        {header}
+                        </h3>
+                        <p> 
+                        {text}
+                        </p>
+                        <div class="col-3-3">
+                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt="{productName}" />
+                        </div>
+                        </div>"""
+
+            # We use maximum of 4 product images therefore this condition which excludes the image if a longer text is given
+            else:
+                templateElement = f"""<div class="col-1-6 top">
                     <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="{header}" />
                     </div>
                     <div class="col-5-6 m-center">
@@ -67,11 +90,8 @@ class TextProcessor:
                     <p> 
                     {text}
                     </p>
-                    <div class="col-3-3">
-                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt="{productName}" />
-                    </div>
-                    </div>"""
-                    
+                    </div>"""    
+
             soup = BeautifulSoup(templateElement, 'html.parser')
             
             for img in soup.find_all('img', class_='left'):
@@ -146,11 +166,11 @@ class Paraphraser:
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("SEOMaker v2.0")
+        self.window.title("SEOMaker v2.0.1")
         self.window.iconbitmap("icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
-        self.window.resizable(False, True)
+        self.window.resizable(False, False)
         self.textProcessor = TextProcessor(self)
         self.paraphraser = Paraphraser(self)
         self.defaultPrompt = "Sparafrazuj tekst tak aby był unikalny, zachowując strukturę akapitów. Zrób to jak specjalista SEO. Zachowaj poprawność językową i nie używaj strony biernej. Nie używaj stopniowania przymiotników. Tekst ma być w języku polskim i ma różnić się od pierwotnej wersji. Rozbuduj tekst o większą ilość znaków."
