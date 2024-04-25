@@ -1,4 +1,4 @@
-('j:\\Desktop\\SEOMaker\\build\\SEOMaker\\PYZ-00.pyz',
+('J:\\Desktop\\SEOMaker\\build\\SEOMaker\\PYZ-00.pyz',
  [('__future__', 'c:\\software\\python3\\lib\\__future__.py', 'PYMODULE'),
   ('_compat_pickle',
    'c:\\software\\python3\\lib\\_compat_pickle.py',

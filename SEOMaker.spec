@@ -5,7 +5,7 @@ a = Analysis(
     ['SEOMaker.py'],
     pathex=[],
     binaries=[],
-    datas=[('dist/icon.ico', '.')],
+    datas=[('dist/icon.ico', '.'), ('dist/prompt.txt', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

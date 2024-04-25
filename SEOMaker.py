@@ -166,14 +166,15 @@ class Paraphraser:
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("SEOMaker v2.0.1")
+        self.window.title("SEOMaker v2.0.2")
         self.window.iconbitmap("icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, False)
         self.textProcessor = TextProcessor(self)
         self.paraphraser = Paraphraser(self)
-        self.defaultPrompt = "Sparafrazuj tekst tak aby był unikalny, zachowując strukturę akapitów. Zrób to jak specjalista SEO. Zachowaj poprawność językową i nie używaj strony biernej. Nie używaj stopniowania przymiotników. Tekst ma być w języku polskim i ma różnić się od pierwotnej wersji. Rozbuduj tekst o większą ilość znaków."
+        self.defaultPrompt = self.loadDefaultPrompt()
+        
 
         notebook = ttk.Notebook(self.window)
         
@@ -273,6 +274,10 @@ class GUI:
         
         notebook.pack(expand=True, fill='both')
          
+    def loadDefaultPrompt(self):
+        with open('prompt.txt', 'r', encoding='utf-8') as file:
+           prompt = file.read()
+           return prompt
     
     def copyToClipboard(self, widget, addPrompt=False):
         
@@ -300,7 +305,7 @@ class GUI:
         
     def run(self):
         self.window.mainloop() 
-
+        
 
 if __name__ == "__main__":
     gui = GUI()
