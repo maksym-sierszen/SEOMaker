@@ -12,6 +12,7 @@ class TextProcessor:
         self.readyToUse = ""
         self.imageFileName = ""
         self.templateLength = 4
+        self.selectedType = 1
     
     def getData(self):
         self.productDescription = self.gui.textWindowTab1.get("1.0", "end-1c")
@@ -20,8 +21,7 @@ class TextProcessor:
         self.productName = self.paragraphs[0]
         self.templateLength = len(self.paragraphs) // 2 
 
-    
-    
+
     def generateImageFileName(self, productName):
         imageFileNameBase = self.productName
         polishLetters = {'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z'}
@@ -34,10 +34,6 @@ class TextProcessor:
         for symbol in symbolsToChange:
             if symbol in imageFileNameBase:
                 imageFileNameBase = imageFileNameBase.replace(symbol, "-")
-               
-
-
-        
 
         for i in range(1, self.templateLength+1):
             self.imageFileName = f"{imageFileNameBase}-{i}"
@@ -48,8 +44,15 @@ class TextProcessor:
         gui.imageNameEntryTab1.delete(0, tk.END)
         gui.imageNameEntryTab1.insert(0, imageFileNameBase+"-") 
 
-     
-     
+
+    def fillTemplateNew(self, productName, paragraphs):
+        fragments = []
+        
+        # if selected type 1 firs ttemplate element center AND rest is images
+
+        # if selected type 2 first template element left AND rest is images
+
+        # if selected type 3 first template element left AND rest is no images
     def fillTemplate(self, productName, paragraphs):
         
         # Stores the final template as a list of fragments, which will then be joined together
@@ -166,8 +169,8 @@ class Paraphraser:
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("SEOMaker v2.0.2")
-        self.window.iconbitmap("icon.ico")
+        self.window.title("SEOMaker v2.1.0")
+        self.window.iconbitmap("dist/icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, False)
@@ -194,26 +197,41 @@ class GUI:
         self.imageNameEntryTab1 = tk.Entry(tab1, width=20)
         self.copyNameButtonTab1 = tk.Button(tab1, text="Kopiuj nazwę", command=lambda: self.copyToClipboard(self.imageNameEntryTab1), bg="#008CBA")
         
+        self.var = tk.IntVar()
+        self.centerRadioTab1 = tk.Radiobutton(tab1, text="CENTER", variable=self.var, value=1, command=self.radioSelectionSend)
+        self.leftRadioTab1 = tk.Radiobutton(tab1, text="LEWO", variable=self.var, value=2, command=self.radioSelectionSend)
+        self.miniRadioTab1 = tk.Radiobutton(tab1, text="MINI", variable=self.var, value=3, command=self.radioSelectionSend)
+        
+
+
+
+
         ## SPACING
 
         paddingx1=50
-        # FIRST ROW (0 - Labels)
-        self.textLabelTab1.grid(row=0, column=0, padx=(paddingx1, paddingx1/2), pady=(10, 0)) 
-        self.htmlLabelTab1.grid(row=0, column=2, padx=(paddingx1/2, paddingx1), pady=(10, 0)) 
-        # SECOND ROW (1 - Windows and button)
-        self.textWindowTab1.grid(row=1, column=0, padx=(paddingx1, paddingx1/2), pady=(5, 10))
-        self.transferToHTMLButtonTab1.grid(row=1, column=1, padx=(paddingx1/2, paddingx1/2), pady=10)
-        self.HTMLWindowTab1.grid(row=1, column=2, padx=(paddingx1/2, paddingx1), pady=(5, 10))
+        # FIRST ROW (0 - Radio Buttons)
+        self.centerRadioTab1.grid(row=0, column=0, padx=(paddingx1, paddingx1/2), pady=(20, 0))
+        self.leftRadioTab1.grid(row=0, column=1, padx=(paddingx1/2, paddingx1/2), pady=(20, 0))
+        self.miniRadioTab1.grid(row=0, column=2, padx=(paddingx1/2, paddingx1), pady=(20, 0))
 
-        # THIRD ROW (2 - Copy HTML Button)
-        self.copyHTMLButtonTab1.grid(row=2, column=2, padx=(paddingx1/2, paddingx1), pady=10)
-                
-        # FOURTH ROW (3 - Image Name Section)
-        self.imageNameTab1.grid(row=3, column=0, pady=30)
-        self.imageNameEntryTab1.grid(row=3, column=1, pady=30)
-        self.copyNameButtonTab1.grid(row=3, column=2, pady=30)
+        # SECOND ROW (1 - Labels)
+        self.textLabelTab1.grid(row=1, column=0, padx=(paddingx1, paddingx1/2), pady=(20, 0)) 
+        self.htmlLabelTab1.grid(row=1, column=2, padx=(paddingx1/2, paddingx1), pady=(20, 0)) 
 
-    
+        # THIRD ROW (2 - Windows and button)
+        self.textWindowTab1.grid(row=2, column=0, padx=(paddingx1, paddingx1/2), pady=(5, 10))
+        self.transferToHTMLButtonTab1.grid(row=2, column=1, padx=(paddingx1/2, paddingx1/2), pady=10)
+        self.HTMLWindowTab1.grid(row=2, column=2, padx=(paddingx1/2, paddingx1), pady=(5, 10))
+
+        # FOURTH ROW (3 - Copy HTML Button)
+        self.copyHTMLButtonTab1.grid(row=3, column=2, padx=(paddingx1/2, paddingx1), pady=10)
+                        
+        # FIFTH ROW (4 - Image Name Section)
+        self.imageNameTab1.grid(row=4, column=0, pady=30)
+        self.imageNameEntryTab1.grid(row=4, column=1, pady=30)
+        self.copyNameButtonTab1.grid(row=4, column=2, pady=30)
+
+
         # Tab for paraphrases (tab2)
         tab2 = ttk.Frame(notebook)
 
@@ -255,7 +273,7 @@ class GUI:
         self.copyHTMLButtonTab2.grid(row=3, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 5))
         self.copyTextButtonTab2.grid(row=3, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 5))
 
-        # FIFTH ROW (4 - Prompt Sectio)
+        # FIFTH ROW (4 - Prompt Section)
         self.promptLabelTab2.grid(row=4, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
         self.promptTextWindowTab2.grid(row=4, column=1, padx=(paddingx2/2, paddingx2/2), pady=(10, 0))
         #self.copyPromptButtonTab2.grid(row=4, column=2, padx=(10, 5), pady=(10, 0))
@@ -305,7 +323,10 @@ class GUI:
         
     def run(self):
         self.window.mainloop() 
-        
+    
+    def radioSelectionSend(self):
+        self.textProcessor.selectedType = self.var.get()
+
 
 if __name__ == "__main__":
     gui = GUI()
