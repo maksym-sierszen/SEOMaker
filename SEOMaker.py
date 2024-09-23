@@ -45,66 +45,168 @@ class TextProcessor:
         gui.imageNameEntryTab1.insert(0, imageFileNameBase+"-") 
 
 
-    def fillTemplateNew(self, productName, paragraphs):
-        fragments = []
-        
-        # if selected type 1 firs ttemplate element center AND rest is images
-
-        # if selected type 2 first template element left AND rest is images
-
-        # if selected type 3 first template element left AND rest is no images
     def fillTemplate(self, productName, paragraphs):
-        
-        # Stores the final template as a list of fragments, which will then be joined together
         fragments = []
         
-        for n in range(0, len(paragraphs), 2):
-            
-    
-            # Using n for headers and n+1 for paragraphs
-            header = paragraphs[n] if n < len(paragraphs) else ""
-            text = paragraphs[n+1] if n+1 < len(paragraphs) else ""
-            
-            if n<7:
-                templateElement = f"""<div class="col-1-6 top">
-                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="{header}" />
-                        </div>
-                        <div class="col-5-6 m-center">
-                        <h3 class="size-5">
-                        {header}
-                        </h3>
-                        <p> 
-                        {text}
-                        </p>
-                        <div class="col-3-3">
-                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt="{productName}" />
-                        </div>
-                        </div>"""
+        header = paragraphs[0] if len(paragraphs) > 0 else ""
+        text = paragraphs[1] if len(paragraphs) > 1 else ""
 
-            # We use maximum of 4 product images therefore this condition which excludes the image if a longer text is given
-            else:
-                templateElement = f"""<div class="col-1-6 top">
-                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/nazwa-piktogramu.svg" alt="{header}" />
-                    </div>
-                    <div class="col-5-6 m-center">
-                    <h3 class="size-5">
-                    {header}
-                    </h3>
-                    <p> 
-                    {text}
-                    </p>
-                    </div>"""    
 
-            soup = BeautifulSoup(templateElement, 'html.parser')
-            
-            for img in soup.find_all('img', class_='left'):
-                img['alt'] = productName
+        separatorElement = f"""<div class="separator short"></div>"""
         
-            fragments.append(str(soup))
+       
+        mainTemplateElementCenter = f"""<div class="col-3-3 m-center">
+                                        <p>
+
+                                        {text}
+
+                                        </p>
+                                        </div>
+
+                                        <div class="col-3-3 center">
+
+                                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" alt=""/>
 
 
-  
-        self.readyToUse = ''.join(fragments)
+                                        </div>
+
+                                        <!--img koniec-->
+
+
+
+
+
+                                        <div class="separator short"></div>
+
+
+                                        <!-- header-->
+                                        <div class="col-3-3">
+
+                                        <h3 class="size-5">
+                                                               {header}
+                                        </h3>
+                                        </div>
+                                        <!-- end header-->"""
+        
+     
+        mainTemplateElementLeft = f"""<div class="col-3-3 cc-mobile">
+                                    <div class="col-2-5 cc-mobile-2">
+                                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt=""/>
+                                    </div>
+                                    <div class="col-3-5 cc-mobile-1">
+
+                                    <p>
+                                    
+                                    {text}
+
+                                    </p>
+                                    </div>
+                                    </div>
+                                    <div class="separator short"></div>
+
+
+                                    <!-- header-->
+                                    <div class="col-3-3">
+
+                                    <h3 class="size-5">
+                                    
+                                    {header}
+
+                                    </h3>
+                                    </div>
+                                    <!-- end header-->"""                
+
+        mainTemplateElementMini = f"""<div class="col-1-6 top">
+                                    <img alt="" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/piktogram.svg"/>
+                                    </div>
+                                    <div class="col-5-6 m-center">
+                                    <h3 class="size-5">
+                                        {header}
+                                    </h3>
+                                    <p> 
+                                        {text}
+                                    </p>
+                                    <div class="col-3-3">
+                                    <img alt="" class="left" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg"/>
+                                    </div>
+                                    </div>"""
+
+        if self.selectedType == 1:
+            fragments.append(mainTemplateElementCenter)
+        elif self.selectedType == 2:
+            fragments.append(mainTemplateElementLeft)
+        else: 
+            fragments.append(mainTemplateElementMini)
+
+        for i in range(2, len(paragraphs), 2):
+            header = paragraphs[i] if i < len(paragraphs) else ""
+            text = paragraphs[i+1] if i+1 < len(paragraphs) else ""
+
+            if self.selectedType == 3:
+                templateElementMini = f"""<div class="col-1-6 top">
+                                        <img alt="" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/piktogram.svg"/>
+                                        </div>
+                                        <div class="col-5-6 m-center">
+                                        <h3 class="size-5">
+                                            {header}
+                                        </h3>
+                                        <p> 
+                                            {text}
+                                        </p>
+                                        <div class="col-3-3">
+                                        <img alt="" class="left" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg"/>
+                                        </div>
+                                        </div> """
+                
+                fragments.append(templateElementMini.replace("{header}", header).replace("{text}", text))
+
+            else:    
+                
+                templateElementLeft = f"""<div class="col-3-3 cc-mobile bg-gray-porcelain rounded-2xl">
+                                        <div class="col-2-5 cc-mobile-2">
+                                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt=""/>
+                                        </div>
+                                        <div class="col-3-5 cc-mobile-1">
+                                        <h4>
+                                        
+                                        {header}
+                                        
+                                        </h4>
+                                        <p>
+                                        
+                                        {text}
+                                        
+                                        </p>
+                                        </div>
+                                        </div>"""
+    
+                templateElementRight = f"""<div class="col-3-3 cc-mobile bg-gray-porcelain rounded-2xl">
+                                        <div class="col-3-5 cc-mobile-1 ">
+                                        <h4>
+                                        {header}
+                                        
+                                        </h4>
+                                        <p>
+                                        
+                                        {text}
+                                        
+                                        </p>
+                                        </div>
+                                        <div class="col-2-5 cc-mobile-2">
+                                        <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt=""/>
+                                        </div>
+                                        
+                                        </div>"""
+                if (i // 2) % 2 == 0:
+                    fragments.append(templateElementLeft.replace("{header}", header).replace("{text}", text))
+                else: 
+                    fragments.append(templateElementRight.replace("{header}", header).replace("{text}", text))
+
+                if (i + 2) < len(paragraphs):
+                    fragments.append(separatorElement)
+
+        self.readyToUse = separatorElement.join(fragments)
+
 
      
     def generateSEO(self):
