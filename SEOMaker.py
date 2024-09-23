@@ -272,7 +272,7 @@ class GUI:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("SEOMaker v2.1.0")
-        self.window.iconbitmap("dist/icon.ico")
+        self.window.iconbitmap("icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, False)
