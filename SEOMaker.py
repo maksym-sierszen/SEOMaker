@@ -116,18 +116,20 @@ class TextProcessor:
                                     </div>
                                     <!-- end header-->"""                
 
-        mainTemplateElementMini = f"""<div class="col-1-6 top">
-                                    <img alt="" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/piktogram.svg"/>
+        mainTemplateElementMini = f"""<div class="col-3-3 cc-mobile">
+                                    <div class="col-2-5 cc-mobile-2">
+                                    <img src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg" class="left" alt=""/>
                                     </div>
-                                    <div class="col-5-6 m-center">
+                                    <div class="col-3-5 cc-mobile-1">
                                     <h3 class="size-5">
-                                        {header}
+                                    
+                                    {header}
                                     </h3>
-                                    <p> 
-                                        {text}
+                                     <p>
+                                    
+                                    {text}
+
                                     </p>
-                                    <div class="col-3-3">
-                                    <img alt="" class="left" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg"/>
                                     </div>
                                     </div>"""
 
@@ -143,19 +145,13 @@ class TextProcessor:
             text = paragraphs[i+1] if i+1 < len(paragraphs) else ""
 
             if self.selectedType == 3:
-                templateElementMini = f"""<div class="col-1-6 top">
-                                        <img alt="" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/piktogramy/piktogram.svg"/>
-                                        </div>
-                                        <div class="col-5-6 m-center">
+                templateElementMini = f"""<div class="col-5-6 m-center">
                                         <h3 class="size-5">
                                             {header}
                                         </h3>
                                         <p> 
                                             {text}
                                         </p>
-                                        <div class="col-3-3">
-                                        <img alt="" class="left" src="https://media.komputronik.pl/pl-komputronik/img/opisy_produktow/content/SEO/IMAGENAME.jpg"/>
-                                        </div>
                                         </div> """
                 
                 fragments.append(templateElementMini.replace("{header}", header).replace("{text}", text))
@@ -198,15 +194,18 @@ class TextProcessor:
                                         
                                         </div>"""
                 if (i // 2) % 2 == 0:
-                    fragments.append(templateElementLeft.replace("{header}", header).replace("{text}", text))
-                else: 
                     fragments.append(templateElementRight.replace("{header}", header).replace("{text}", text))
+                else: 
+                    fragments.append(templateElementLeft.replace("{header}", header).replace("{text}", text))
 
                 if (i + 2) < len(paragraphs):
                     fragments.append(separatorElement)
 
-        self.readyToUse = separatorElement.join(fragments)
-
+        if self.selectedType != 3:
+            self.readyToUse = separatorElement.join(fragments)
+        else: 
+            filler = ""
+            self.readyToUse = filler.join(fragments)
 
      
     def generateSEO(self):
