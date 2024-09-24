@@ -12,12 +12,6 @@ SEOMaker to narzędzie stworzone w celu generowania treści SEO w pliku txt z pl
 ## Co robi za nas SEOMaker?
 - Uzupełnia wszystkie nagłówki oraz treść.
 - Wypełnia nazwy grafik w formacie "przykladowa-nazwa-produktu-n" gdzie n to kolejna cyfra od 1 do n (n = liczba nagłówków).
-- Wypełnia sekcje alt="nagłówek" przy piktogramach.
-- Wypełnia sekcje alt="" przy grafikach wklejając nazwę produktu.
 - Tworzy dla nas gotową do skopiowania nazwę grafik, wystarczy ją wkleić do zdjęć i ponumerować.
 - Dodaje prompt przy kopiowaniu paragrafów przeznaczonych do parafrazy w modelu językowym.
 - Ubiera za nas sparafrazowane treści z powrotem w odpowiedni html.
-
-## Czego nie robi SEOMaker?
-- Brak uzupełnienia piktogramów.
-- Brak kontekstu/opisu grafiki w sekcjach alt="".
