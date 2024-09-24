@@ -1,6 +1,6 @@
 # SEOMaker
 
-SEOMaker to narzędzie stworzone w celu generowania treści SEO w pliku txt z plików docx.
+SEOMaker to narzędzie stworzone dla KTR w celu wypełniania szablonów opisów SEO w pliku txt na podstawie otrzymywanych plików docx.
 
 ## Funkcje
 - **Interfejs użytkownika (GUI) oparty na Tkinter**: Umożliwia łatwą i szybką interakcję z programem.
