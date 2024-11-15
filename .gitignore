@@ -1,3 +1,4 @@
 /opisy
 .DS_Store
 /venv
+.env
