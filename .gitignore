@@ -1,3 +1,4 @@
-/OPISY1
-/OPISY2
+/opisy
 .DS_Store
+/venv
+.env
