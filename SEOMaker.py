@@ -265,43 +265,8 @@ class Paraphraser:
         # Clear HTMLWindowTab1 and instert modified HTML
         self.gui.HTMLWindowTab2.delete("1.0", "end")
         self.gui.HTMLWindowTab2.insert("1.0", str(soup))
-        
-import anthropic
-from dotenv import load_dotenv
-import os
-class ClaudeClient:
-    def __init__(self): 
-        load_dotenv()
-        self.client = anthropic.Anthropic(
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        self.prompt = GUI.loadDefaultPrompt(self)
     
     
-    def createMessage(self):
-        message = self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1000,
-            temperature=0,
-            system= self.prompt,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": gui.HTMLWindowTab3.get("1.0", "end-1c")
-                        }
-                    ]
-                }
-            ]
-        )
-        message = message.content[0].text
-        gui.textWindowTab3.insert("end", message)
-    
-            
-        
-            
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
@@ -313,7 +278,7 @@ class GUI:
         self.textProcessor = TextProcessor(self)
         self.paraphraser = Paraphraser(self)
         self.defaultPrompt = self.loadDefaultPrompt()
-        self.ClaudeClient = ClaudeClient()
+        
 
         notebook = ttk.Notebook(self.window)
         
@@ -416,56 +381,15 @@ class GUI:
         self.promptCheckbuttonTab2.grid(row=4, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 0))
         
         
-        tab3 = ttk.Frame(notebook)
-        self.htmlLabelTab3 = tk.Label(tab3, text="HTML")
-        self.textLabelTab3 = tk.Label(tab3, text="Tekst Claude")
-
-        self.HTMLWindowTab3 = tk.Text(tab3, height=20, width=30)
-        self.textWindowTab3 = tk.Text(tab3, height=20, width=30)
-
-        self.transferToTextButtonTab3 = tk.Button(tab3, text="Wyślij do Claude -->", command=self.ClaudeClient.createMessage, bg="#008CBA", width="15") 
-        self.transferToHTMLButtonTab3 = tk.Button(tab3, text="<---", command=self.paraphraser.addHTML, bg="#008CBA", width="15") 
-
-        self.copyHTMLButtonTab3 = tk.Button(tab3, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab3), bg="#008CBA", width="30") 
-        self.copyTextButtonTab3 = tk.Button(tab3, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab3, addPrompt=True), bg="#008CBA", width="30")  
-
-        self.promptLabelTab3 = tk.Label(tab3, text="Prompt")
-        self.promptTextWindowTab3 = tk.Text(tab3, height=10, width= 30)
-        self.promptState = tk.BooleanVar(value=False)
-        self.promptCheckbuttonTab3 = tk.Checkbutton(tab3, text="Dodawaj Prompt ", variable=self.promptState)
-        self.promptTextWindowTab3.insert("1.0", self.defaultPrompt) 
         
-            ## SPACING
-        paddingx2=15
-        # FIRST ROW (0 - Labels)
-        self.htmlLabelTab3.grid(row=0, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
-        self.textLabelTab3.grid(row=0, column=2, padx=(paddingx2/2, paddingx2), pady=(10, 0))
-
-        # SECOND ROW (1 - Windows and Transfer Button)
-        self.HTMLWindowTab3.grid(row=1, column=0, rowspan=2, padx=(paddingx2, paddingx2/2), pady=(5, 10))
-        self.textWindowTab3.grid(row=1, column=2, rowspan=2, padx=(paddingx2/2, paddingx2/2), pady=(5, 10))
-        self.transferToTextButtonTab3.grid(row=1, column=1, padx=(paddingx2/2,paddingx2), pady=(5, 10))
         
-        # THIRD ROW (2 - Transfer Button)
-        self.transferToHTMLButtonTab3.grid(row=2, column=1, padx=(paddingx2/2, paddingx2/2), pady=(5, 10))
-
-        # FOURTH ROW (3 - copyButtons)
-        self.copyHTMLButtonTab3.grid(row=3, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 5))
-        self.copyTextButtonTab3.grid(row=3, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 5))
-
-        # FIFTH ROW (4 - Prompt Section)
-        self.promptLabelTab3.grid(row=4, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
-        self.promptTextWindowTab3.grid(row=4, column=1, padx=(paddingx2/2, paddingx2/2), pady=(10, 0))
-        #self.copyPromptButtonTab3.grid(row=4, column=2, padx=(10, 5), pady=(10, 0))
-        self.promptCheckbuttonTab3.grid(row=4, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 0))
         style=ttk.Style()
         style.theme_use('default')
         style.configure('TNotebook.Tab', background='lightblue')
         style.map('TNotebook.Tab', background=[('selected', '#008CBA')])
         # Adding tabs to notebook
         notebook.add(tab1, text="Nowy opis")
-        notebook.add(tab2, text="Parafrazy Manual")
-        notebook.add(tab3, text="Parafrazy API")
+        notebook.add(tab2, text="Parafrazy")
         
         notebook.pack(expand=True, fill='both')
          
