@@ -227,24 +227,27 @@ class Paraphraser:
         self.gui = gui
         self.HTMLContent = ''''''
         
-    def extractContent(self):
-        HTMLContent = self.gui.HTMLWindowTab2.get("1.0", "end-1c")
-
-        # Create a BeautifulSoup object for HTML modification
-     
-        soup = BeautifulSoup(HTMLContent, 'html.parser')
-      
-
-        self.gui.textWindowTab2.delete("1.0", "end")
-
-        for p in soup.find_all('p'):
-            text = p.get_text(strip=True) + "\n\n" 
-            self.gui.textWindowTab2.insert("end", text)
+        
+    def extractContent(self, input_window):
     
-    def addHTML(self):
+        HTMLContent = input_window.get("1.0", "end-1c")
 
-        paragraphsContent = self.gui.textWindowTab2.get("1.0", "end-1c").strip().split('\n\n')
-        HTMLContent = self.gui.HTMLWindowTab2.get("1.0", "end-1c")
+        soup = BeautifulSoup(HTMLContent, 'html.parser')
+
+     
+
+        extracted_text = "\n\n".join(p.get_text(strip=True) for p in soup.find_all('p'))
+
+        return extracted_text
+
+    def insertText(self, output_window, text):
+        output_window.delete("1.0", "end")
+        output_window.insert("end", text)
+
+    
+    def addHTML(self, input_window, output_window):
+        paragraphsContent = input_window.get("1.0", "end-1c").strip().split('\n\n')
+        HTMLContent = output_window.get("1.0", "end-1c")
 
         # Create a BeautifulSoup object for HTML modification
        
@@ -263,8 +266,32 @@ class Paraphraser:
             p.string = new_text
 
         # Clear HTMLWindowTab1 and instert modified HTML
-        self.gui.HTMLWindowTab2.delete("1.0", "end")
-        self.gui.HTMLWindowTab2.insert("1.0", str(soup))
+        output_window.delete("1.0", "end")
+        output_window.insert("1.0", str(soup))
+
+    def addHTMLClaude(self):
+        paragraphsContent = self.gui.textWindowTab3.get("1.0", "end-1c").strip().split('\n\n')
+        HTMLContent = self.gui.HTMLWindowTab3.get("1.0", "end-1c")
+
+        # Create a BeautifulSoup object for HTML modification
+    
+        soup = BeautifulSoup(HTMLContent, 'html.parser')
+
+        paragraphs = soup.find_all('p')
+        
+        # Remove <html> and <body> tags if they exist, but keep their content
+        if soup.html is not None:
+            soup.html.unwrap()
+        if soup.body is not None:
+            soup.body.unwrap()
+        
+        # Swap the content of each paragraph with the content from TextWindowTab2
+        for p, new_text in zip(paragraphs, paragraphsContent):
+            p.string = new_text
+
+        # Clear HTMLWindowTab1 and instert modified HTML
+        self.gui.HTMLWindowTab3.delete("1.0", "end")
+        self.gui.HTMLWindowTab3.insert("1.0", str(soup))
         
 import anthropic
 from dotenv import load_dotenv
@@ -290,7 +317,7 @@ class ClaudeClient:
                     "content": [
                         {
                             "type": "text",
-                            "text": gui.HTMLWindowTab3.get("1.0", "end-1c")
+                            "text": Paraphraser.extractContent(self,gui.HTMLWindowTab3)
                         }
                     ]
                 }
@@ -317,6 +344,8 @@ class GUI:
 
         notebook = ttk.Notebook(self.window)
         
+        
+          ########################## TAB 1 ######################## 
         # Tab for new files (tab1)
         tab1 = ttk.Frame(notebook)
         
@@ -367,7 +396,7 @@ class GUI:
         self.imageNameEntryTab1.grid(row=4, column=1, pady=30)
         self.copyNameButtonTab1.grid(row=4, column=2, pady=30)
 
-
+        ########################## TAB 2 ######################## 
         # Tab for paraphrases (tab2)
         tab2 = ttk.Frame(notebook)
 
@@ -378,7 +407,17 @@ class GUI:
         self.HTMLWindowTab2 = tk.Text(tab2, height=20, width=30)
         self.textWindowTab2 = tk.Text(tab2, height=20, width=30)
 
-        self.transferToTextButtonTab2 = tk.Button(tab2, text="--->", command=self.paraphraser.extractContent, bg="#008CBA", width="15") 
+        self.transferToTextButtonTab2 = tk.Button(
+            tab2,
+            text="--->",
+            command=lambda: self.paraphraser.insertText(
+                self.textWindowTab2,
+                self.paraphraser.extractContent(self.HTMLWindowTab2)
+            ),
+            bg="#008CBA",
+            width="15"
+        )
+
         self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=self.paraphraser.addHTML, bg="#008CBA", width="15") 
 
         self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab2), bg="#008CBA", width="30") 
@@ -416,15 +455,27 @@ class GUI:
         self.promptCheckbuttonTab2.grid(row=4, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 0))
         
         
+        
+        
+        
+        
+        
+          ########################## TAB 3 ######################## 
         tab3 = ttk.Frame(notebook)
         self.htmlLabelTab3 = tk.Label(tab3, text="HTML")
-        self.textLabelTab3 = tk.Label(tab3, text="Tekst Claude")
+        self.textLabelTab3 = tk.Label(tab3, text="Parafraza Claude")
 
         self.HTMLWindowTab3 = tk.Text(tab3, height=20, width=30)
         self.textWindowTab3 = tk.Text(tab3, height=20, width=30)
 
-        self.transferToTextButtonTab3 = tk.Button(tab3, text="Wyślij do Claude -->", command=self.ClaudeClient.createMessage, bg="#008CBA", width="15") 
-        self.transferToHTMLButtonTab3 = tk.Button(tab3, text="<---", command=self.paraphraser.addHTML, bg="#008CBA", width="15") 
+        self.transferToTextButtonTab3 = tk.Button(
+            tab3,
+            text="Wyślij do Claude -->",
+            command= self.ClaudeClient.createMessage,
+            bg="#008CBA",
+            width="15"
+        )
+        self.transferToHTMLButtonTab3 = tk.Button(tab3, text="<---", command=lambda: self.paraphraser.addHTML(self.textWindowTab3, self.HTMLWindowTab3), bg="#008CBA", width="15") 
 
         self.copyHTMLButtonTab3 = tk.Button(tab3, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab3), bg="#008CBA", width="30") 
         self.copyTextButtonTab3 = tk.Button(tab3, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab3, addPrompt=True), bg="#008CBA", width="30")  
@@ -435,7 +486,8 @@ class GUI:
         self.promptCheckbuttonTab3 = tk.Checkbutton(tab3, text="Dodawaj Prompt ", variable=self.promptState)
         self.promptTextWindowTab3.insert("1.0", self.defaultPrompt) 
         
-            ## SPACING
+        
+        ## SPACING
         paddingx2=15
         # FIRST ROW (0 - Labels)
         self.htmlLabelTab3.grid(row=0, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
