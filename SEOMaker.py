@@ -213,14 +213,16 @@ class TextProcessor:
         self.fillTemplate(self.productName, self.paragraphs)
         self.generateImageFileName(self.productName)
         
-        gui.HTMLWindowTab1.delete("1.0", tk.END)  # Remove current text
+        gui.HTMLWindowTab1.delete("1.0", tk.END)  
         gui.HTMLWindowTab1.insert("1.0", self.readyToUse)
         
-        gui.HTMLWindowTab2.delete("1.0", tk.END)  # Remove current text
+        gui.HTMLWindowTab2.delete("1.0", tk.END)  
         gui.HTMLWindowTab2.insert("1.0", self.readyToUse)
         
         gui.textWindowTab2.delete("1.0", tk.END)
 
+        gui.HTMLWindowTab3.delete("1.0", tk.END)  
+        gui.HTMLWindowTab3.insert("1.0", self.readyToUse)
 
 class Paraphraser:
     def __init__(self, gui):
@@ -324,15 +326,14 @@ class ClaudeClient:
             ]
         )
         message = message.content[0].text
+        gui.textWindowTab3.delete("1.0", tk.END)
         gui.textWindowTab3.insert("end", message)
-    
-            
-        
+
             
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
-        self.window.title("SEOMaker v2.1.0")
+        self.window.title("SEOMaker v2.2.0")
         self.window.iconbitmap("icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
@@ -418,7 +419,7 @@ class GUI:
             width="15"
         )
 
-        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=self.paraphraser.addHTML, bg="#008CBA", width="15") 
+        self.transferToHTMLButtonTab2 = tk.Button(tab2, text="<---", command=lambda: self.paraphraser.addHTML(self.textWindowTab2, self.HTMLWindowTab2), bg="#008CBA", width="15") 
 
         self.copyHTMLButtonTab2 = tk.Button(tab2, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab2), bg="#008CBA", width="30") 
         self.copyTextButtonTab2 = tk.Button(tab2, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab2, addPrompt=True), bg="#008CBA", width="30")  
@@ -478,12 +479,10 @@ class GUI:
         self.transferToHTMLButtonTab3 = tk.Button(tab3, text="<---", command=lambda: self.paraphraser.addHTML(self.textWindowTab3, self.HTMLWindowTab3), bg="#008CBA", width="15") 
 
         self.copyHTMLButtonTab3 = tk.Button(tab3, text="Kopiuj HTML", command=lambda: self.copyToClipboard(self.HTMLWindowTab3), bg="#008CBA", width="30") 
-        self.copyTextButtonTab3 = tk.Button(tab3, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab3, addPrompt=True), bg="#008CBA", width="30")  
+        self.copyTextButtonTab3 = tk.Button(tab3, text="Kopiuj Tekst", command=lambda: self.copyToClipboard(self.textWindowTab3), bg="#008CBA", width="30")  
 
         self.promptLabelTab3 = tk.Label(tab3, text="Prompt")
         self.promptTextWindowTab3 = tk.Text(tab3, height=10, width= 30)
-        self.promptState = tk.BooleanVar(value=False)
-        self.promptCheckbuttonTab3 = tk.Checkbutton(tab3, text="Dodawaj Prompt ", variable=self.promptState)
         self.promptTextWindowTab3.insert("1.0", self.defaultPrompt) 
         
         
@@ -509,7 +508,6 @@ class GUI:
         self.promptLabelTab3.grid(row=4, column=0, padx=(paddingx2, paddingx2/2), pady=(10, 0))
         self.promptTextWindowTab3.grid(row=4, column=1, padx=(paddingx2/2, paddingx2/2), pady=(10, 0))
         #self.copyPromptButtonTab3.grid(row=4, column=2, padx=(10, 5), pady=(10, 0))
-        self.promptCheckbuttonTab3.grid(row=4, column=2, padx=(paddingx2/2,paddingx2), pady=(10, 0))
         style=ttk.Style()
         style.theme_use('default')
         style.configure('TNotebook.Tab', background='lightblue')
