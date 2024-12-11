@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from bs4 import BeautifulSoup
 import re
+from gui.gui import GUI
+from clients.claude_client import ClaudeClient
+
 
 class TextProcessor:
     def __init__(self, gui):
@@ -238,9 +241,9 @@ class Paraphraser:
 
      
 
-        extracted_text = "\n\n".join(p.get_text(strip=True) for p in soup.find_all('p'))
+        extractedText = "\n\n".join(p.get_text(strip=True) for p in soup.find_all('p'))
 
-        return extracted_text
+        return extractedText
 
     def insertText(self, output_window, text):
         output_window.delete("1.0", "end")
@@ -294,42 +297,7 @@ class Paraphraser:
         # Clear HTMLWindowTab1 and instert modified HTML
         self.gui.HTMLWindowTab3.delete("1.0", "end")
         self.gui.HTMLWindowTab3.insert("1.0", str(soup))
-        
-import anthropic
-from dotenv import load_dotenv
-import os
-class ClaudeClient:
-    def __init__(self): 
-        load_dotenv()
-        self.client = anthropic.Anthropic(
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        self.prompt = GUI.loadDefaultPrompt(self)
-    
-    
-    def createMessage(self):
-        message = self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1000,
-            temperature=0,
-            system= self.prompt,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": Paraphraser.extractContent(self,gui.HTMLWindowTab3)
-                        }
-                    ]
-                }
-            ]
-        )
-        message = message.content[0].text
-        gui.textWindowTab3.delete("1.0", tk.END)
-        gui.textWindowTab3.insert("end", message)
-
-            
+                   
 class GUI:
     def __init__(self):
         self.window = tk.Tk()
@@ -519,10 +487,7 @@ class GUI:
         
         notebook.pack(expand=True, fill='both')
          
-    def loadDefaultPrompt(self):
-        with open('prompt.txt', 'r', encoding='utf-8') as file:
-           prompt = file.read()
-           return prompt
+  
     
     def copyToClipboard(self, widget, addPrompt=False):
         
@@ -557,4 +522,5 @@ class GUI:
 
 if __name__ == "__main__":
     gui = GUI()
+    gui.ClaudeClient = ClaudeClient(gui)
     gui.run()

@@ -2,3 +2,5 @@
 .DS_Store
 /venv
 .env
+reorg_vision.txt
+todo.txt
