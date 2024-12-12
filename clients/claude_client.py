@@ -2,6 +2,8 @@ import anthropic
 from dotenv import load_dotenv
 import os
 import tkinter as tk
+from utils.prompt_loader import loadDefaultPrompt
+
 
 class ClaudeClient:
     def __init__(self, gui): 
@@ -10,7 +12,8 @@ class ClaudeClient:
         self.client = anthropic.Anthropic(
             api_key=os.getenv("ANTHROPIC_API_KEY")
         )
-        self.prompt = self.gui.loadDefaultPrompt(self)
+        self.prompt = loadDefaultPrompt()
+
     
     
     def createMessage(self):
@@ -33,5 +36,5 @@ class ClaudeClient:
             ]
         )
         message = message.content[0].text
-        gui.textWindowTab3.delete("1.0", tk.END)
-        gui.textWindowTab3.insert("end", message)
+        self.gui.textWindowTab3.delete("1.0", tk.END)
+        self.gui.textWindowTab3.insert("end", message)
