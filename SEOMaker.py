@@ -1,7 +1,3 @@
-import tkinter as tk
-from tkinter import ttk
-from bs4 import BeautifulSoup
-import re
 from gui import GUI
 from clients.claude_client import ClaudeClient
 from processors.text_processor import TextProcessor

@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from utils.insert_text import insert_text
+from utils.copy_to_clipboard import copy_to_clipboard
+
 
 def create_tab3(parent, self):
         self.tab3 = ttk.Frame(self.notebook)
