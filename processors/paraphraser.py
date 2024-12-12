@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from utils.insert_text import insertText  # Import the utility function
 
 class Paraphraser:
     def __init__(self, gui):

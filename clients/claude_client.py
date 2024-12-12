@@ -2,7 +2,7 @@ import anthropic
 from dotenv import load_dotenv
 import os
 import tkinter as tk
-from utils.prompt_loader import loadDefaultPrompt
+from utils.prompt_loader import load_default_prompt
 
 
 class ClaudeClient:
@@ -12,7 +12,7 @@ class ClaudeClient:
         self.client = anthropic.Anthropic(
             api_key=os.getenv("ANTHROPIC_API_KEY")
         )
-        self.prompt = loadDefaultPrompt()
+        self.prompt = load_default_prompt()
 
     
     

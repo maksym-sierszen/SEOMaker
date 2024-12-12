@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from utils.insert_text import insertText
+from utils.insert_text import insert_text
 
 
 def create_tab1(parent, self):
@@ -23,7 +23,13 @@ def create_tab1(parent, self):
     self.copyHTMLButtonTab1 = tk.Button(
         self.tab1,
         text="Kopiuj HTML",
-        command=lambda: self.copyToClipboard(self.HTMLWindowTab1),
+        command=lambda: self.copy_to_clipboard(
+            window=self.window, 
+            widget=self.HTMLWindowTab1, 
+            add_prompt=False, 
+            prompt_state=None, 
+            prompt_text_widget=None
+        ),
         bg="#008CBA",
         width="30"
     )

@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from utils.insert_text import insertText
+from utils.insert_text import insert_text
+from utils.copy_to_clipboard import copy_to_clipboard
+
+
 def create_tab2(parent, self):
         self.tab2 = ttk.Frame(self.notebook)
         
@@ -13,7 +16,7 @@ def create_tab2(parent, self):
         self.transferToTextButtonTab2 = tk.Button(
             self.tab2,
             text="--->",
-            command=lambda: insertText(
+            command=lambda: insert_text(
                 self.textWindowTab2,
                 self.paraphraser.extractContent(self.HTMLWindowTab2)
             ),
@@ -32,14 +35,26 @@ def create_tab2(parent, self):
         self.copyHTMLButtonTab2 = tk.Button(
             self.tab2, 
             text="Kopiuj HTML", 
-            command=lambda: self.copyToClipboard(self.HTMLWindowTab2), 
+            command=lambda: copy_to_clipboard(
+                window=self.window,
+                widget=self.HTMLWindowTab2,
+                add_prompt=False,
+                prompt_state=None,
+                prompt_text_widget=None
+            ),
             bg="#008CBA", 
             width="30"
         ) 
         self.copyTextButtonTab2 = tk.Button(
             self.tab2, 
             text="Kopiuj Tekst", 
-            command=lambda: self.copyToClipboard(self.textWindowTab2, addPrompt=True), 
+            command=lambda: copy_to_clipboard(
+                window=self.window,
+                widget=self.textWindowTab2,
+                add_prompt=True,  # Add a prompt as specified
+                prompt_state=self.promptState.get() if hasattr(self, "promptState") else None,
+                prompt_text_widget=self.promptTextWindowTab2 if hasattr(self, "promptTextWindowTab2") else None,
+            ),
             bg="#008CBA", 
             width="30"
         )  

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from utils.prompt_loader import loadDefaultPrompt
+from utils.prompt_loader import load_default_prompt
 
 from .tabs import create_tab1, create_tab2, create_tab3
 
@@ -18,7 +18,7 @@ class GUI:
         self.textProcessor = text_processor
         self.paraphraser = paraphraser
         self.ClaudeClient = claude_client
-        self.defaultPrompt = loadDefaultPrompt()
+        self.defaultPrompt = load_default_prompt()
 
         self.createWidgets()
         self.setupLayout()
@@ -44,24 +44,7 @@ class GUI:
         self.notebook.pack(expand=True, fill='both')
 
 
-    # EXTRACT TO UTILS  
-    def copyToClipboard(self, widget, addPrompt=False):
-        if addPrompt and self.promptState.get():
-            promptContent = self.promptTextWindowTab2.get("1.0", "end-1c")+ "\n\n"
-        else:
-            promptContent = ""
-        
-        if isinstance(widget, tk.Entry):
-            valueToCopy = widget.get()
-        elif isinstance(widget, tk.Text):
-            valueToCopy = widget.get("1.0", "end-1c")
-        else:
-            valueToCopy = ""
-        
-        valueToCopy = promptContent + valueToCopy
-        
-        self.window.clipboard_clear()
-        self.window.clipboard_append(valueToCopy)
+
 
     def run(self):
         self.window.mainloop() 
