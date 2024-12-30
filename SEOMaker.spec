@@ -28,8 +28,8 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=False,  # Wyłączona konsola
-    icon='icon.ico',  # Ikona aplikacji
+    console=False,  
+    icon='resources/icon.ico',  
 )
 
 coll = COLLECT(
