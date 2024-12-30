@@ -5,7 +5,7 @@ block_cipher = None
 a = Analysis(
     ['SEOMaker.py'],  # Main Python script
     pathex=[],  # Additional paths for imports (if needed)
-    binaries=[('C:/hostedtoolcache/windows/Python/3.9.13/x64/python39.dll', '.')],  # Include Python DLL
+    binaries=[],  # Include any additional binaries if necessary
     datas=[('resources/icon.ico', 'resources')],  # Include the application icon
     hiddenimports=[],  # Specify any hidden imports
     hookspath=[],  # Custom PyInstaller hooks (if any)
@@ -14,7 +14,7 @@ a = Analysis(
     win_no_prefer_redirects=False,  # Use default Windows DLL behavior
     win_private_assemblies=False,  # Use shared assemblies
     cipher=block_cipher,  # Cipher for bytecode encryption (if needed)
-    noarchive=True,  # Prevent archiving files; keep them extracted
+    noarchive=False,  # Allow archiving to pack dependencies into a single file
 )
 
 # Bundle Python code into a standalone executable
@@ -25,7 +25,7 @@ exe = EXE(
     pyz,  # Compiled Python code
     a.scripts,  # Entry-point scripts
     [],
-    exclude_binaries=False,  # Include binaries in the output folder
+    exclude_binaries=True,  # Exclude binaries to avoid `_internal`
     name='SEOMaker.exe',  # Name of the resulting executable
     debug=False,  # Disable debug mode
     bootloader_ignore_signals=False,  # Handle signals during bootloader execution
