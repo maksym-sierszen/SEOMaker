@@ -10,7 +10,7 @@ class GUI:
     def __init__(self, text_processor, paraphraser, claude_client):
         self.window = tk.Tk()
         self.window.title("SEOMaker v2.2.1")
-        self.window.iconbitmap("icon.ico")
+        self.window.iconbitmap("../resources/icon.ico")
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, False)
