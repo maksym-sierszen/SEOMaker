@@ -6,7 +6,10 @@ a = Analysis(
     ['SEOMaker.py'],  # Main Python script
     pathex=[],  # Additional paths for imports (if needed)
     binaries=[],  # Include any additional binaries if necessary
-    datas=[('resources/icon.ico', 'resources')],  # Include the application icon
+    datas=[
+        ('resources/icon.ico', 'resources'),  # Include the application icon
+        ('utils', 'utils')  # Include the utils folder in the output
+    ],
     hiddenimports=[],  # Specify any hidden imports
     hookspath=[],  # Custom PyInstaller hooks (if any)
     runtime_hooks=[],  # Runtime hooks to execute
@@ -25,7 +28,7 @@ exe = EXE(
     pyz,  # Compiled Python code
     a.scripts,  # Entry-point scripts
     [],
-    exclude_binaries=True,  # Exclude binaries to avoid `_internal`
+    exclude_binaries=True,  # Exclude binaries to avoid unnecessary files
     name='SEOMaker.exe',  # Name of the resulting executable
     debug=False,  # Disable debug mode
     bootloader_ignore_signals=False,  # Handle signals during bootloader execution
@@ -40,7 +43,7 @@ coll = COLLECT(
     exe,  # Main executable
     a.binaries,  # Binary dependencies
     a.zipfiles,  # Additional zip files (if any)
-    a.datas,  # Data files to include
+    a.datas,  # Data files to include (e.g., utils, resources)
     strip=False,  # Do not strip debug symbols
     upx=True,  # Compress with UPX
     upx_exclude=[],  # Exclude specific files from UPX compression
