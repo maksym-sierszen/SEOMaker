@@ -1,4 +1,4 @@
-name: Build and Release Python App
+name: Build and Release
 
 on:
   push:
@@ -45,7 +45,8 @@ jobs:
         with:
           artifacts: dist/SEOMaker/SEOMaker.exe
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.run_number }}
-          name: Release-${{ github.run_number }}
+          tag: v1.0.${{ github.run_number }}
+          name: SEOMaker v2.2.${{ github.run_number }}
           body: |
-            Release created automatically by GitHub Actions.
+            ### Changelog
+            - Automated release created by GitHub Actions.

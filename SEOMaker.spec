@@ -1,11 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
 block_cipher = None
 
-# Analysis step: Analyze the dependencies of the script
 a = Analysis(
     ['SEOMaker.py'],  # Main Python script
     pathex=[],  # Additional paths to search for imports (if required)
-    binaries=[],  # Extra binary files to include (if needed)
+    binaries=[('C:/path/to/python39.dll', '.')],  # Include python39.dll
     datas=[],  # Additional data files (e.g., images, text files)
     hiddenimports=[],  # Hidden imports that PyInstaller might not detect
     hookspath=[],  # Paths to custom PyInstaller hooks
@@ -17,10 +16,8 @@ a = Analysis(
     noarchive=False,  # Prevent archiving; keeps files extracted
 )
 
-# Create a Python executable (compressed and ready for inclusion in the build)
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-# Define the main executable file
 exe = EXE(
     pyz,  # The compiled Python code
     a.scripts,  # Entry-point scripts
@@ -35,7 +32,6 @@ exe = EXE(
     icon='resources/icon.ico',  # Path to the application icon
 )
 
-# Collect all files, dependencies, and resources into the output folder
 coll = COLLECT(
     exe,  # Main executable
     a.binaries,  # Binary dependencies
