@@ -13,43 +13,52 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python environment
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.9" # Specify Python version
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Step 4: Build the application using PyInstaller
       - name: Build application
         run: |
           pyinstaller SEOMaker.spec
 
+      # Step 5: Verify the output directory structure
       - name: Verify output
         run: |
           dir dist
 
+      # Step 6: Compress the dist folder into a zip file
       - name: Compress build folder
         run: |
           powershell Compress-Archive -Path dist/SEOMaker/* -DestinationPath SEOMaker.zip
 
+      # Step 7: Upload the main executable as an artifact
       - name: Upload Release Artifact (EXE)
         uses: actions/upload-artifact@v3
         with:
           name: SEOMaker-EXE
           path: dist/SEOMaker/SEOMaker.exe
 
+      # Step 8: Upload the complete build (zip file) as an artifact
       - name: Upload Release Artifact (ZIP)
         uses: actions/upload-artifact@v3
         with:
           name: SEOMaker-Complete
           path: SEOMaker.zip
 
+      # Step 9: Create a GitHub release with artifacts
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
