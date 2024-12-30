@@ -14,7 +14,7 @@ a = Analysis(
     win_no_prefer_redirects=False,  # Windows-specific configuration
     win_private_assemblies=False,  # Use private assemblies on Windows
     cipher=block_cipher,  # Optional encryption for bytecode
-    noarchive=False,  # Prevent archiving; keeps files extracted
+    noarchive=True,  # Prevent archiving; keeps files extracted
 )
 
 # Create a Python executable
@@ -24,7 +24,7 @@ exe = EXE(
     pyz,  # The compiled Python code
     a.scripts,  # Entry-point scripts
     [],
-    exclude_binaries=False,  # Include binaries in the executable
+    exclude_binaries=False,  # Include binaries in the output folder
     name='SEOMaker.exe',  # Name of the resulting executable file
     debug=False,  # Disable debug mode
     bootloader_ignore_signals=False,  # Bootloader ignores termination signals
@@ -32,5 +32,16 @@ exe = EXE(
     upx=True,  # Enable UPX compression (optional)
     console=False,  # Disable console window (use windowed mode)
     icon='resources/icon.ico',  # Path to the application icon
-    onefile=True,  # Package everything into a single executable
+)
+
+# Collect all files, dependencies, and resources into the output folder
+coll = COLLECT(
+    exe,  # Main executable
+    a.binaries,  # Binary dependencies
+    a.zipfiles,  # Zip dependencies (if any)
+    a.datas,  # Additional data files
+    strip=False,  # Do not strip unnecessary symbols
+    upx=True,  # Compress files with UPX
+    upx_exclude=[],  # Files excluded from UPX compression
+    name='SEOMaker',  # Name of the output folder in the `dist/` directory
 )
