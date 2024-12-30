@@ -34,19 +34,31 @@ jobs:
         run: |
           dir dist
 
-      - name: Upload Release Artifact
+      - name: Compress build folder
+        run: |
+          tar -czvf SEOMaker.zip -C dist SEOMaker
+
+      - name: Upload Release Artifact (EXE)
         uses: actions/upload-artifact@v3
         with:
-          name: PythonApp
+          name: SEOMaker-EXE
           path: dist/SEOMaker/SEOMaker.exe
+
+      - name: Upload Release Artifact (ZIP)
+        uses: actions/upload-artifact@v3
+        with:
+          name: SEOMaker-Complete
+          path: SEOMaker.zip
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: dist/SEOMaker/SEOMaker.exe
+          artifacts: |
+            dist/SEOMaker/SEOMaker.exe
+            SEOMaker.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: v1.0.${{ github.run_number }}
-          name: SEOMaker v2.2.${{ github.run_number }}
+          name: SEOMaker v1.0.${{ github.run_number }}
           body: |
             ### Changelog
             - Automated release created by GitHub Actions.
