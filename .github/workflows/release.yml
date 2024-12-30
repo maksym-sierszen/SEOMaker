@@ -36,7 +36,7 @@ jobs:
 
       - name: Compress build folder
         run: |
-          tar -czvf SEOMaker.zip -C dist SEOMaker
+          powershell Compress-Archive -Path dist/SEOMaker/* -DestinationPath SEOMaker.zip
 
       - name: Upload Release Artifact (EXE)
         uses: actions/upload-artifact@v3
