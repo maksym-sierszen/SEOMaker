@@ -5,7 +5,7 @@ block_cipher = None
 a = Analysis(
     ['SEOMaker.py'],  # Main Python script
     pathex=[],  # Additional paths to search for imports (if required)
-    binaries=[('C:/path/to/python39.dll', '.')],  # Include python39.dll
+    binaries=[('C:/hostedtoolcache/windows/Python/3.9.13/x64/python39.dll', '.')],  # Correct DLL path
     datas=[],  # Additional data files (e.g., images, text files)
     hiddenimports=[],  # Hidden imports that PyInstaller might not detect
     hookspath=[],  # Paths to custom PyInstaller hooks
@@ -14,8 +14,9 @@ a = Analysis(
     win_no_prefer_redirects=False,  # Windows-specific configuration
     win_private_assemblies=False,  # Use private assemblies on Windows
     cipher=block_cipher,  # Optional encryption for bytecode
-    noarchive=True,  # Prevent archiving; keeps all files extracted in the folder
+    noarchive=True,  # Prevent archiving; keeps files extracted in the folder
 )
+
 
 # Create a Python executable (compressed and ready for inclusion in the build)
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
