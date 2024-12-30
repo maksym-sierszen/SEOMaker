@@ -5,6 +5,9 @@ on:
     branches:
       - ci/cd
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: windows-latest
@@ -35,12 +38,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PythonApp
-          path: dist/SEOMaker.exe
+          path: dist/SEOMaker/SEOMaker.exe
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: dist/SEOMaker.exe
+          artifacts: dist/SEOMaker/SEOMaker.exe
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.run_number }}
           name: Release-${{ github.run_number }}
