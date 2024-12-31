@@ -1,18 +1,28 @@
 import anthropic
-from dotenv import load_dotenv
+import json
 import os
 import tkinter as tk
 from utils.prompt_loader import load_default_prompt
+from utils.get_base_path import get_base_path 
+
 import time
 
 class ClaudeClient:
     def __init__(self, gui): 
-        load_dotenv()
-        self.gui = gui
+        self.gui = gui 
+        base_path = get_base_path()        
+        config_path = os.path.join(base_path, 'config.json')
         
-        self.api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not self.api_key:
-            raise ValueError("Brak ANTHROPIC_API_KEY. Upewnij się, ze jest w środowisku.")
+        try:
+            with open(config_path, 'r') as config_file:
+                config = json.load(config_file)
+                self.api_key = config.get("ANTHROPIC_API_KEY")
+                if not self.api_key:
+                    raise ValueError("Brak ANTHROPIC_API_KEY w config.json")
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Plik config.json nie został znaleziony w {config_path}")
+        except json.JSONDecodeError:
+            raise ValueError("Plik config.json zawiera nieprawidłowy format JSON")
         
         
         self.client = anthropic.Anthropic(
