@@ -11,7 +11,7 @@ class ClaudeClient:
         self.gui = gui
         
         self.api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not self.api.key:
+        if not self.api_key:
             raise ValueError("Brak ANTHROPIC_API_KEY. Upewnij się, ze jest w środowisku.")
         
         
