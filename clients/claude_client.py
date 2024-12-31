@@ -9,9 +9,16 @@ class ClaudeClient:
     def __init__(self, gui): 
         load_dotenv()
         self.gui = gui
+        
+        self.api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not self.api.key:
+            raise ValueError("Brak ANTHROPIC_API_KEY. Upewnij się, ze jest w środowisku.")
+        
+        
         self.client = anthropic.Anthropic(
-            api_key=os.getenv("ANTHROPIC_API_KEY")
+            api_key=self.api_key
         )
+        
         self.prompt = load_default_prompt()
         self.MAX_RETRIES = 3
         self.DELAY = 5

@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9" 
+          python-version: "3.9"
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -31,6 +31,8 @@ jobs:
 
       # Step 4: Build the application using PyInstaller
       - name: Build application
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           pyinstaller SEOMaker.spec
 
