@@ -8,6 +8,7 @@ a = Analysis(
     binaries=[],  # Include any additional binaries if necessary
     datas=[
         ('resources/icon.ico', 'resources'),  # Include the application icon
+        ('resources/prompt.txt', 'resources'),  # Include the default prompt file
         ('utils', 'utils')  # Include the utils folder in the output
     ],
     hiddenimports=[],  # Specify any hidden imports

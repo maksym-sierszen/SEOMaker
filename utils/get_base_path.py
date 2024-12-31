@@ -2,9 +2,9 @@ import os
 import sys
 
 def get_base_path():
-    if getattr(sys, 'frozen', False):  # If the application is running as a frozen executable
-        return sys._MEIPASS  # PyInstaller extracts files to a temp directory
-    return os.path.dirname(os.path.abspath(__file__))  # Path of the current file
-
-def get_project_root():
-    return os.path.dirname(get_base_path())  # Moves one level up to the project root
+  
+    #Returns the base path for the application, considering both local and PyInstaller builds.
+    
+    if getattr(sys, 'frozen', False):  # If running as a PyInstaller bundle
+        return sys._MEIPASS  # Folder where PyInstaller extracts resources
+    return os.path.dirname(os.path.abspath(__file__))  # Path for local development
