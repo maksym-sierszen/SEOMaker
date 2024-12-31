@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from utils.prompt_loader import load_default_prompt
-
+from utils.get_base_path import get_base_path
+import os
 from .tabs import create_tab1, create_tab2, create_tab3
 
 
@@ -10,7 +11,13 @@ class GUI:
     def __init__(self, text_processor, paraphraser, claude_client):
         self.window = tk.Tk()
         self.window.title("SEOMaker v2.2.1")
-        self.window.iconbitmap("./resources/icon.ico")
+                          
+        # set the icon by dynamically constructing the path to the file                          
+        base_path = get_base_path()
+        icon_path = os.path.join(base_path, 'resources', 'icon.ico')                  
+        self.window.iconbitmap(icon_path)
+        
+        
         self.window.geometry("800x650")
         self.window.configure(background='white')
         self.window.resizable(False, False)
